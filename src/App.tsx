@@ -6,7 +6,7 @@ import DistrictStats from '@/components/DistrictStats';
 import Calculator from '@/components/Calculator';
 import Header from '@/components/Header';
 import RightPanel from '@/components/RightPanel';
-import { ChevronDown, ChevronUp, MapIcon, Plus, Minus, Layers, Target } from 'lucide-react';
+import { ChevronDown, ChevronUp, Plus, Minus, Layers, Target } from 'lucide-react';
 
 const App: React.FC = () => {
   const [selectedDistrictId, setSelectedDistrictId] = useState<string | null>(null);
@@ -139,12 +139,6 @@ const App: React.FC = () => {
                 >
                   <Target size={14} />
                 </button>
-              </div>
-
-              {/* Branding Overlay */}
-              <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-10 opacity-30 flex items-center gap-2 pointer-events-none text-slate-900">
-                <MapIcon className="w-3.5 h-3.5 md:w-5 md:h-5" />
-                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em]">Oslo Boligverdi</span>
               </div>
 
               {/* Stats/Calculator Panel — absolute overlay at bottom of map */}
