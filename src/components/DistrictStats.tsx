@@ -171,7 +171,7 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
 
   return (
     <div className="flex flex-col animate-in slide-in-from-bottom-4 duration-500">
-      <div className="pt-4 pb-1 px-3 md:px-8">
+      <div className="pt-4 pb-1 px-3 md:px-0">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
           <StatBox
             title="Prisendring"
