@@ -175,8 +175,8 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
           <StatBox
             title="Prisendring"
-            mobileValue={`+${data.priceChange}%`}
-            desktopValue={`+${data.priceChange}%`}
+            mobileValue={`+${data.priceChange} %`}
+            desktopValue={`+${data.priceChange} %`}
             colorClass={getTrendColor(data.priceChange)}
             icon={<TrendingUp />}
             desktopDesc={compTexts?.trend.desktop || "Gjennomsnittlig vekst."}
@@ -196,7 +196,7 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
           <StatBox
             title="Medianpris"
             mobileValue={`${data.medianPrice.toLocaleString('nb-NO')} kr`}
-            desktopValue={`${(data.medianPrice / 1000000).toFixed(1)}M`}
+            desktopValue={`${(data.medianPrice / 1000000).toFixed(1)} M`}
             colorClass={getMedianColor(data.medianPrice)}
             icon={<BarChart3 />}
             desktopDesc={compTexts?.median.desktop || "Normalt prisnivå."}
