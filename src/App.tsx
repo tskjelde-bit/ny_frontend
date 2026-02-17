@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { OSLO_DISTRICTS } from '@/constants';
-import { DistrictData } from '@/types';
+import { DistrictInfo } from '@/types';
 import MapComponent, { MapComponentHandle, TileLayerKey, TILE_LAYERS } from '@/components/MapComponent';
 import DistrictStats from '@/components/DistrictStats';
 import Calculator from '@/components/Calculator';
@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
   const mapComponentRef = useRef<MapComponentHandle>(null);
 
-  const selectedDistrict = DISTRICTS.find(d => d.id === selectedDistrictId) || null;
+  const selectedDistrict = OSLO_DISTRICTS.find(d => d.id === selectedDistrictId) || null;
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,7 +27,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleDistrictSelect = (district: DistrictData) => {
+  const handleDistrictSelect = (district: DistrictInfo) => {
     setSelectedDistrictId(district.id);
     setIsExpanded(true);
     setShowCalculator(false);

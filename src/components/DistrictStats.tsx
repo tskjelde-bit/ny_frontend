@@ -2,12 +2,12 @@
 "use client";
 
 import React from 'react';
-import { DistrictData } from '@/types';
+import { DistrictInfo } from '@/types';
 import { CITY_AVERAGE } from '@/constants';
 import { TrendingUp, Clock, BarChart3, Coins } from 'lucide-react';
 
 interface DistrictStatsProps {
-  district: DistrictData | null;
+  district: DistrictInfo | null;
   isExpanded: boolean;
   onOpenCalculator: () => void;
 }
@@ -25,21 +25,21 @@ const getSqmColor = (val: number) => 'text-[#facc15]';
 const getMedianColor = (val: number) => 'text-[#facc15]';
 
 // Logikk for generering av sammenligningstekster
-const getComparisonTexts = (district: DistrictData) => {
-  const trendDiff = Number((district.priceTrend - CITY_AVERAGE.priceTrend).toFixed(1));
+const getComparisonTexts = (district: DistrictInfo) => {
+  const trendDiff = Number((district.priceChange - CITY_AVERAGE.priceTrend).toFixed(1));
   const trendPrep = trendDiff > 0.1 ? "over" : trendDiff < -0.1 ? "under" : "på nivå med";
   const trendInterp = trendDiff > 0.1 ? "Sterkere vekst." : trendDiff < -0.1 ? "Svakere vekst." : "Normal vekst.";
   const trendValStr = trendDiff > 0.1 ? `+${trendDiff}` : trendDiff < -0.1 ? `${trendDiff}` : "";
-  
-  const daysDiff = district.daysOnMarket - CITY_AVERAGE.daysOnMarket;
+
+  const daysDiff = district.avgDaysOnMarket - CITY_AVERAGE.daysOnMarket;
   const daysPrep = daysDiff < -2 ? "raskere enn" : daysDiff > 2 ? "tregere enn" : "på nivå med";
   const daysInterp = daysDiff < -2 ? "Høy likviditet." : daysDiff > 2 ? "Lavere nivå." : "Normalt.";
-  
-  const medianDiff = Number((district.medianPrice - CITY_AVERAGE.medianPrice).toFixed(1));
+
+  const medianDiff = Number(((district.medianPrice / 1000000) - CITY_AVERAGE.medianPrice).toFixed(1));
   const medianPrep = medianDiff > 0.2 ? "over" : medianDiff < -0.2 ? "under" : "på nivå med";
   const medianInterp = medianDiff > 0.2 ? "Høyere nivå." : medianDiff < -0.2 ? "Lavere nivå." : "Normalt.";
-  
-  const sqmDiff = district.avgSqmPrice - CITY_AVERAGE.avgSqmPrice;
+
+  const sqmDiff = district.pricePerSqm - CITY_AVERAGE.avgSqmPrice;
   const sqmPrep = Math.abs(sqmDiff) > 1000 ? (sqmDiff > 0 ? "over" : "under") : "på nivå med";
   const sqmInterp = sqmDiff > 1000 ? "Høyere priser." : sqmDiff < -1000 ? "Rimeligere." : "Normalt.";
 
@@ -65,14 +65,15 @@ const getComparisonTexts = (district: DistrictData) => {
 
 const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onOpenCalculator }) => {
   const data = district || {
-    name: 'Oslo',
-    priceTrend: CITY_AVERAGE.priceTrend,
-    daysOnMarket: CITY_AVERAGE.daysOnMarket,
-    medianPrice: CITY_AVERAGE.medianPrice,
-    avgSqmPrice: CITY_AVERAGE.avgSqmPrice,
     id: 'oslo',
+    name: 'Oslo',
+    priceChange: CITY_AVERAGE.priceTrend,
+    avgDaysOnMarket: CITY_AVERAGE.daysOnMarket,
+    pricePerSqm: CITY_AVERAGE.avgSqmPrice,
+    medianPrice: CITY_AVERAGE.medianPrice * 1000000,
     description: '',
-    path: ''
+    lat: 59.9139,
+    lng: 10.7522
   };
 
   const compTexts = district ? getComparisonTexts(district) : null;
@@ -84,17 +85,17 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
       <div className="bg-white/50 h-full flex items-center animate-in fade-in duration-700">
         <div className="max-w-[1050px] mx-auto px-4 md:px-10 w-full py-3.5 md:py-4">
           <div className="grid grid-cols-4 gap-2 md:gap-4 w-full">
-            <StatItem label="Prisendring" value={`+${data.priceTrend}%`} color={osloTextColor} labelColor={osloTextColor} center small />
-            <StatItem 
-              label="Salgstid" 
-              value={<>{data.daysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>} 
-              color={osloTextColor} 
+            <StatItem label="Prisendring" value={`+${data.priceChange}%`} color={osloTextColor} labelColor={osloTextColor} center small />
+            <StatItem
+              label="Salgstid"
+              value={<>{data.avgDaysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>}
+              color={osloTextColor}
               labelColor={osloTextColor}
-              center 
-              small 
+              center
+              small
             />
-            <StatItem label="Medianpris" value={`${data.medianPrice}M`} color={osloTextColor} labelColor={osloTextColor} center small />
-            <StatItem label="Per M2" value={`${(data.avgSqmPrice / 1000).toFixed(0)} K`} color={osloTextColor} labelColor={osloTextColor} center small />
+            <StatItem label="Medianpris" value={`${(data.medianPrice / 1000000).toFixed(1)}M`} color={osloTextColor} labelColor={osloTextColor} center small />
+            <StatItem label="Per M2" value={`${(data.pricePerSqm / 1000).toFixed(0)} K`} color={osloTextColor} labelColor={osloTextColor} center small />
           </div>
         </div>
       </div>
@@ -106,16 +107,16 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
       <div className="flex flex-col animate-in fade-in duration-300">
         <div className="flex items-center py-3.5 md:py-4 px-4 md:px-10 border-b border-slate-800/10">
            <div className="grid grid-cols-4 gap-2 md:gap-4 w-full max-w-7xl mx-auto">
-              <StatItem label="Prisendring" value={`+${data.priceTrend}%`} color={getTrendColor(data.priceTrend)} small center />
-              <StatItem 
-                label="Salgstid" 
-                value={<>{data.daysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>} 
-                color={getDaysColor(data.daysOnMarket)} 
-                small 
-                center 
+              <StatItem label="Prisendring" value={`+${data.priceChange}%`} color={getTrendColor(data.priceChange)} small center />
+              <StatItem
+                label="Salgstid"
+                value={<>{data.avgDaysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>}
+                color={getDaysColor(data.avgDaysOnMarket)}
+                small
+                center
               />
-              <StatItem label="Medianpris" value={`${(data.medianPrice).toFixed(1)}M`} color={getMedianColor(data.medianPrice)} small center />
-              <StatItem label="Per M2" value={`${(data.avgSqmPrice / 1000).toFixed(0)} K`} color={getSqmColor(data.avgSqmPrice)} small center />
+              <StatItem label="Medianpris" value={`${(data.medianPrice / 1000000).toFixed(1)}M`} color={getMedianColor(data.medianPrice)} small center />
+              <StatItem label="Per M2" value={`${(data.pricePerSqm / 1000).toFixed(0)} K`} color={getSqmColor(data.pricePerSqm)} small center />
            </div>
         </div>
         <button 
@@ -132,37 +133,37 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
     <div className="flex flex-col animate-in slide-in-from-bottom-4 duration-500">
       <div className="pt-4 pb-1 px-3 md:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
-          <StatBox 
-            title="Prisendring" 
-            value={`+${data.priceTrend}%`} 
-            colorClass={getTrendColor(data.priceTrend)} 
+          <StatBox
+            title="Prisendring"
+            value={`+${data.priceChange}%`}
+            colorClass={getTrendColor(data.priceChange)}
             icon={<TrendingUp />}
             desktopDesc={compTexts?.trend.desktop || "Gjennomsnittlig vekst."}
             mobileDesc={compTexts?.trend.mobile || "Normal vekst."}
           />
 
-          <StatBox 
-            title="Salgstid" 
-            value={<>{data.daysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>} 
-            colorClass={getDaysColor(data.daysOnMarket)} 
+          <StatBox
+            title="Salgstid"
+            value={<>{data.avgDaysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>}
+            colorClass={getDaysColor(data.avgDaysOnMarket)}
             icon={<Clock />}
             desktopDesc={compTexts?.days.desktop || "Normal etterspørsel."}
             mobileDesc={compTexts?.days.mobile || "Normal etterspørsel."}
           />
 
-          <StatBox 
-            title="Medianpris" 
-            value={`${data.medianPrice}M`} 
-            colorClass={getMedianColor(data.medianPrice)} 
+          <StatBox
+            title="Medianpris"
+            value={`${(data.medianPrice / 1000000).toFixed(1)}M`}
+            colorClass={getMedianColor(data.medianPrice)}
             icon={<BarChart3 />}
             desktopDesc={compTexts?.median.desktop || "Normalt prisnivå."}
             mobileDesc={compTexts?.median.mobile || "Normalt nivå."}
           />
 
-          <StatBox 
-            title="Per m2" 
-            value={`${(data.avgSqmPrice / 1000).toFixed(0)} K`} 
-            colorClass={getSqmColor(data.avgSqmPrice)} 
+          <StatBox
+            title="Per m2"
+            value={`${(data.pricePerSqm / 1000).toFixed(0)} K`}
+            colorClass={getSqmColor(data.pricePerSqm)}
             icon={<Coins />}
             desktopDesc={compTexts?.sqm.desktop || "Normalt prisnivå."}
             mobileDesc={compTexts?.sqm.mobile || "Normalt nivå."}

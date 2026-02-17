@@ -2,12 +2,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { DistrictData, BoligType, Standard } from '@/types';
-import { DISTRICTS, BOLIGTYPE_FACTORS, STANDARD_FACTORS } from '@/constants';
+import { DistrictInfo, BoligType, Standard } from '@/types';
+import { OSLO_DISTRICTS, BOLIGTYPE_FACTORS, STANDARD_FACTORS } from '@/constants';
 import { X, Loader2, Sparkles, Home, Building2, Warehouse, DoorOpen, ArrowRight, TrendingUp, ChevronLeft, ChevronUp, ChevronDown } from 'lucide-react';
 
 interface CalculatorProps {
-  district: DistrictData;
+  district: DistrictInfo;
   onDistrictChange: (id: string) => void;
   onClose: () => void;
 }
@@ -34,7 +34,7 @@ const Calculator: React.FC<CalculatorProps> = ({ district, onDistrictChange, onC
     
     setTimeout(() => {
       const boligtypeFaktor = BOLIGTYPE_FACTORS[type];
-      const effektivPrisPerKvm = district.avgSqmPrice * boligtypeFaktor;
+      const effektivPrisPerKvm = district.pricePerSqm * boligtypeFaktor;
       const basisverdi = area * effektivPrisPerKvm;
       const standardFaktor = STANDARD_FACTORS[standard];
       const finalValue = basisverdi * (1 + standardFaktor);
@@ -80,12 +80,12 @@ const Calculator: React.FC<CalculatorProps> = ({ district, onDistrictChange, onC
                 <div className="space-y-1.5">
                   <label className="text-[9px] font-bold text-slate-500 uppercase tracking-widest ml-1">Bydel</label>
                   <div className="relative">
-                    <select 
+                    <select
                       value={district.id}
                       onChange={(e) => onDistrictChange(e.target.value)}
                       className="w-full bg-[#0a0f1d] border border-slate-800 rounded-xl px-3 py-2.5 text-blue-500 font-bold appearance-none text-sm focus:ring-1 focus:ring-blue-600 outline-none"
                     >
-                      {DISTRICTS.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                      {OSLO_DISTRICTS.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
                     </select>
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600">
                       <ChevronDown className="w-4 h-4" />
@@ -189,7 +189,7 @@ const Calculator: React.FC<CalculatorProps> = ({ district, onDistrictChange, onC
                         <div className="text-slate-500 text-[8px] font-bold uppercase tracking-widest mb-0.5">Trend</div>
                         <div className="text-emerald-400 font-manrope font-extrabold text-sm flex items-center justify-center gap-1">
                           <TrendingUp className="w-3.5 h-3.5" />
-                          +{district.priceTrend}%
+                          +{district.priceChange}%
                         </div>
                      </div>
                   </div>
