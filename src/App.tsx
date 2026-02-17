@@ -58,8 +58,8 @@ const App: React.FC = () => {
             <h1 className="text-2xl md:text-5xl font-manrope font-extrabold text-white tracking-tight mb-0.5 md:mb-2">
               Boligmarkedet i <span className="text-blue-500">{selectedDistrict?.name || 'Oslo'}</span>
             </h1>
-            <p className="text-slate-400 font-semibold text-[14px] md:text-lg opacity-90 leading-snug whitespace-nowrap overflow-hidden text-ellipsis uppercase md:normal-case">
-              {selectedDistrict?.description || 'Klikk på en bydel for å se detaljert markedsstatistikk og prognoser.'}
+            <p className="text-slate-400 font-semibold text-[14px] md:text-[1.35rem] opacity-90 leading-snug whitespace-nowrap overflow-hidden text-ellipsis uppercase">
+              {selectedDistrict?.description || 'Er det kjøper eller selgers marked i Oslo nå?'}
             </p>
           </div>
 
