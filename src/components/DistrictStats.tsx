@@ -175,7 +175,8 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4">
           <StatBox
             title="Prisendring"
-            value={`+${data.priceChange}%`}
+            mobileValue={`+${data.priceChange}%`}
+            desktopValue={`+${data.priceChange}%`}
             colorClass={getTrendColor(data.priceChange)}
             icon={<TrendingUp />}
             desktopDesc={compTexts?.trend.desktop || "Gjennomsnittlig vekst."}
@@ -184,7 +185,8 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
 
           <StatBox
             title="Salgstid"
-            value={<>{data.avgDaysOnMarket} <span className="md:inline hidden">dager</span><span className="md:hidden inline">D</span></>}
+            mobileValue={<>{data.avgDaysOnMarket} dager</>}
+            desktopValue={<>{data.avgDaysOnMarket} dager</>}
             colorClass={getDaysColor(data.avgDaysOnMarket)}
             icon={<Clock />}
             desktopDesc={compTexts?.days.desktop || "Normal etterspørsel."}
@@ -193,7 +195,8 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
 
           <StatBox
             title="Medianpris"
-            value={`${(data.medianPrice / 1000000).toFixed(1)}M`}
+            mobileValue={`${data.medianPrice.toLocaleString('nb-NO')} kr`}
+            desktopValue={`${(data.medianPrice / 1000000).toFixed(1)}M`}
             colorClass={getMedianColor(data.medianPrice)}
             icon={<BarChart3 />}
             desktopDesc={compTexts?.median.desktop || "Normalt prisnivå."}
@@ -202,7 +205,8 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
 
           <StatBox
             title="Per m2"
-            value={`${(data.pricePerSqm / 1000).toFixed(0)} K`}
+            mobileValue={`${data.pricePerSqm.toLocaleString('nb-NO')} kr`}
+            desktopValue={`${(data.pricePerSqm / 1000).toFixed(0)} K`}
             colorClass={getSqmColor(data.pricePerSqm)}
             icon={<Coins />}
             desktopDesc={compTexts?.sqm.desktop || "Normalt prisnivå."}
@@ -228,10 +232,17 @@ const StatItem = ({ label, value, color, small, center, labelColor = "text-slate
   </div>
 );
 
-const StatBox = ({ title, value, colorClass, icon, desktopDesc, mobileDesc }: { title: string, value: React.ReactNode, colorClass: string, icon: React.ReactElement, desktopDesc: string, mobileDesc: string }) => (
+const StatBox = ({ title, mobileValue, desktopValue, colorClass, icon, desktopDesc, mobileDesc }: { title: string, mobileValue?: React.ReactNode, desktopValue?: React.ReactNode, colorClass: string, icon: React.ReactElement, desktopDesc: string, mobileDesc: string }) => (
   <div className="bg-slate-900/40 rounded-[1rem] p-2 md:p-4 border border-white/5 hover:border-blue-500/20 transition-all group">
     <div className="flex items-start justify-between mb-0 md:mb-3">
-      <div className={`${colorClass} font-black text-lg md:text-2xl tracking-tighter transition-colors duration-500`}>{value}</div>
+      {mobileValue && desktopValue ? (
+        <>
+          <div className={`${colorClass} font-black text-lg md:text-2xl tracking-tighter transition-colors duration-500 md:hidden`}>{mobileValue}</div>
+          <div className={`${colorClass} font-black text-lg md:text-2xl tracking-tighter transition-colors duration-500 hidden md:block`}>{desktopValue}</div>
+        </>
+      ) : (
+        <div className={`${colorClass} font-black text-lg md:text-2xl tracking-tighter transition-colors duration-500`}>{mobileValue || desktopValue}</div>
+      )}
       <div className={`${colorClass} opacity-70`}>
         {React.cloneElement(icon as React.ReactElement<any>, { size: 14, strokeWidth: 2.5 })}
       </div>
