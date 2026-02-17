@@ -15,8 +15,8 @@ const Header: React.FC = () => {
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-[100] h-[44px] md:h-[72px] flex items-center transition-all duration-300">
-      {/* Containeren har en større max-width (1820px) enn hovedinnholdet (1680px) og er sentrert */}
-      <div className="w-full max-w-[1820px] mx-auto px-2 md:px-1 flex items-center justify-between h-full">
+      {/* Containeren har samme max-width som hovedinnholdet (1700px) og er sentrert */}
+      <div className="w-full max-w-[1700px] mx-auto px-3 md:px-14 flex items-center justify-between h-full">
         
         {/* Logo-seksjon */}
         <div className="flex items-center gap-1.5 md:gap-2 group cursor-pointer shrink-0">
@@ -57,9 +57,9 @@ const Header: React.FC = () => {
           </button>
         </div>
 
-        {/* Hamburger Menu Icon */}
-        <button 
-          className="p-1.5 text-slate-600 shrink-0"
+        {/* Hamburger Menu Icon - kun synlig på mobil/tablet */}
+        <button
+          className="lg:hidden p-1.5 text-slate-600 shrink-0"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
