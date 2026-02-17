@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { OSLO_DISTRICTS } from '@/constants';
 import { DistrictInfo } from '@/types';
 import MapComponent, { MapComponentHandle, TileLayerKey, TILE_LAYERS } from '@/components/MapComponent';
@@ -14,32 +14,9 @@ const App: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeTileLayer, setActiveTileLayer] = useState<TileLayerKey>('blue');
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
-  const [mapHeight, setMapHeight] = useState('100dvh');
   const mapComponentRef = useRef<MapComponentHandle>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
 
   const selectedDistrict = OSLO_DISTRICTS.find(d => d.id === selectedDistrictId) || null;
-
-  // Dynamic map height: on mobile, fill viewport minus header. On desktop, auto.
-  useEffect(() => {
-    const updateMapHeight = () => {
-      if (window.innerWidth >= 768) {
-        setMapHeight('auto');
-      } else if (headerRef.current) {
-        const headerBottom = headerRef.current.getBoundingClientRect().bottom;
-        setMapHeight(`calc(100dvh - ${headerBottom}px - 4px)`);
-      }
-    };
-    updateMapHeight();
-    const raf = requestAnimationFrame(() => updateMapHeight());
-    const timeout = setTimeout(() => updateMapHeight(), 200);
-    window.addEventListener('resize', updateMapHeight);
-    return () => {
-      window.removeEventListener('resize', updateMapHeight);
-      cancelAnimationFrame(raf);
-      clearTimeout(timeout);
-    };
-  }, [selectedDistrictId]);
 
   const handleDistrictSelect = (district: DistrictInfo) => {
     setSelectedDistrictId(district.id);
@@ -69,15 +46,15 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen md:min-h-screen w-full bg-[#0a0f1d] text-slate-100 font-sans overflow-hidden md:overflow-y-auto">
+    <div className="flex flex-col h-[100dvh] md:min-h-screen md:h-auto w-full bg-[#0a0f1d] text-slate-100 font-sans overflow-hidden md:overflow-y-auto">
       <Header />
 
-      <div className="flex-1 flex justify-center min-h-0">
+      <div className="flex-1 flex flex-col min-h-0 md:block">
         {/* Main Centered Content Wrapper */}
-        <div className="w-full max-w-[1700px] flex flex-col px-0 md:px-14 mx-auto min-h-0">
+        <div className="w-full max-w-[1700px] flex flex-col px-0 md:px-14 mx-auto min-h-0 flex-1">
 
           {/* Title Section */}
-          <div ref={headerRef} className={`pt-4 md:pt-10 pb-4 md:pb-6 shrink-0 text-left px-4 md:px-0 ${showCalculator ? 'hidden md:block' : 'block'}`}>
+          <div className={`pt-2 md:pt-10 pb-2 md:pb-6 shrink-0 text-left px-4 md:px-0 ${showCalculator ? 'hidden md:block' : 'block'}`}>
             <h1 className="text-2xl md:text-5xl font-manrope font-extrabold text-white tracking-tight mb-0.5 md:mb-2">
               Boligmarkedet i <span className="text-blue-500">{selectedDistrict?.name || 'Oslo'}</span>
             </h1>
@@ -91,8 +68,7 @@ const App: React.FC = () => {
 
             {/* Map Container — relative parent, map is absolute inset-0, stats overlay at bottom */}
             <div
-              style={{ minHeight: mapHeight }}
-              className="lg:col-span-8 relative rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] shadow-2xl md:!h-[450px] lg:!h-auto"
+              className="lg:col-span-8 relative rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] shadow-2xl flex-1 min-h-0 md:!h-[450px] lg:!h-auto"
             >
 
               {/* Map — fills entire container */}
