@@ -174,7 +174,7 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-                <div className="bg-[#0a0f1d] overflow-hidden h-full">
+                <div className={`${selectedDistrictId ? 'bg-[#0a0f1d]' : 'bg-transparent'} overflow-hidden h-full`}>
                   {showCalculator && selectedDistrict ? (
                     <Calculator
                       district={selectedDistrict}
