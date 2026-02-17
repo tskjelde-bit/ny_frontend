@@ -242,7 +242,7 @@ const StatBox = ({ title, value, colorClass, icon, desktopDesc, mobileDesc }: { 
       <p className="hidden md:block text-[12px] text-slate-400 leading-tight font-medium opacity-90 line-clamp-2">
         {desktopDesc}
       </p>
-      <p className="block md:hidden text-[9px] text-slate-400 leading-[1.1] font-medium opacity-80 line-clamp-2">
+      <p className="block md:hidden text-[11px] text-slate-400 leading-[1.25] font-medium line-clamp-2">
         {mobileDesc}
       </p>
     </div>
