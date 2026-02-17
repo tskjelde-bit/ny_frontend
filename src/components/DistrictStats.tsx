@@ -30,40 +30,77 @@ const getMedianColor = (val: number) => val >= 7000000 ? GREEN : val >= 4500000 
 
 // Logikk for generering av sammenligningstekster
 const getComparisonTexts = (district: DistrictInfo) => {
+  // Prisutvikling (prosentpoeng)
   const trendDiff = Number((district.priceChange - CITY_AVERAGE.priceTrend).toFixed(1));
-  const trendPrep = trendDiff > 0.1 ? "over" : trendDiff < -0.1 ? "under" : "på nivå med";
-  const trendInterp = trendDiff > 0.1 ? "Sterkere vekst." : trendDiff < -0.1 ? "Svakere vekst." : "Normal vekst.";
-  const trendValStr = trendDiff > 0.1 ? `+${trendDiff}` : trendDiff < -0.1 ? `${trendDiff}` : "";
+  const trendAbsDiff = Math.abs(trendDiff);
+  const trendPrep = trendDiff > 0.1 ? "over" : trendDiff < -0.1 ? "under" : "på linje med";
+  const trendInterp = trendDiff > 0.1
+    ? "Sterkere prisvekst enn byen for øvrig."
+    : trendDiff < -0.1
+    ? "Svakere prisvekst enn byen for øvrig."
+    : "Normal prisvekst.";
+  const trendDesktop = trendAbsDiff > 0.1
+    ? `${trendDiff > 0 ? '+' : ''}${trendDiff} prosentpoeng ${trendPrep} Oslo-snittet (${CITY_AVERAGE.priceTrend}%). ${trendInterp}`
+    : `På linje med Oslo-snittet (${CITY_AVERAGE.priceTrend}%). ${trendInterp}`;
+  const trendMobile = trendAbsDiff > 0.1
+    ? `${trendDiff > 0 ? '+' : ''}${trendDiff}pp ${trendPrep} snittet (${CITY_AVERAGE.priceTrend}%). ${trendDiff > 0.1 ? 'Sterkere vekst.' : 'Svakere vekst.'}`
+    : `På linje med snittet (${CITY_AVERAGE.priceTrend}%). Normal vekst.`;
 
+  // Liggetid (dager)
   const daysDiff = district.avgDaysOnMarket - CITY_AVERAGE.daysOnMarket;
+  const daysAbsDiff = Math.abs(daysDiff);
   const daysPrep = daysDiff < -2 ? "raskere enn" : daysDiff > 2 ? "tregere enn" : "på nivå med";
-  const daysInterp = daysDiff < -2 ? "Høy likviditet." : daysDiff > 2 ? "Lavere nivå." : "Normalt.";
+  const daysInterp = daysDiff < -2
+    ? "Svært likvid marked."
+    : daysDiff > 2
+    ? "Lavere etterspørsel."
+    : "Normal etterspørsel.";
+  const daysDesktop = daysAbsDiff > 2
+    ? `${daysAbsDiff} dager ${daysPrep} Oslo-snittet (${CITY_AVERAGE.daysOnMarket} dager). ${daysInterp}`
+    : `På nivå med Oslo-snittet (${CITY_AVERAGE.daysOnMarket} dager). ${daysInterp}`;
+  const daysMobile = daysAbsDiff > 2
+    ? `${daysAbsDiff} dager ${daysPrep} snittet (${CITY_AVERAGE.daysOnMarket}). ${daysDiff < -2 ? 'Likvid marked.' : 'Lavere etterspørsel.'}`
+    : `På nivå med snittet (${CITY_AVERAGE.daysOnMarket}). Normal etterspørsel.`;
 
+  // Medianpris (millioner)
   const medianDiff = Number(((district.medianPrice / 1000000) - CITY_AVERAGE.medianPrice).toFixed(1));
+  const medianAbsDiff = Math.abs(medianDiff);
   const medianPrep = medianDiff > 0.2 ? "over" : medianDiff < -0.2 ? "under" : "på nivå med";
-  const medianInterp = medianDiff > 0.2 ? "Høyere nivå." : medianDiff < -0.2 ? "Lavere nivå." : "Normalt.";
+  const medianInterp = medianDiff > 1.0
+    ? "Betydelig høyere prisnivå."
+    : medianDiff > 0.2
+    ? "Høyere prisnivå."
+    : medianDiff < -0.2
+    ? "Lavere prisnivå."
+    : "Normalt prisnivå.";
+  const medianDesktop = medianAbsDiff > 0.2
+    ? `${medianAbsDiff} mill. kr ${medianPrep} Oslo-snittet (${CITY_AVERAGE.medianPrice} mill.). ${medianInterp}`
+    : `På nivå med Oslo-snittet (${CITY_AVERAGE.medianPrice} mill.). ${medianInterp}`;
+  const medianMobile = medianAbsDiff > 0.2
+    ? `${medianAbsDiff}M ${medianPrep} snittet (${CITY_AVERAGE.medianPrice}M). ${medianDiff > 1.0 ? 'Betydelig høyere nivå.' : medianDiff > 0.2 ? 'Høyere nivå.' : 'Lavere nivå.'}`
+    : `På nivå med snittet (${CITY_AVERAGE.medianPrice}M). Normalt nivå.`;
 
+  // Kvadratmeterpris (kroner)
   const sqmDiff = district.pricePerSqm - CITY_AVERAGE.avgSqmPrice;
-  const sqmPrep = Math.abs(sqmDiff) > 1000 ? (sqmDiff > 0 ? "over" : "under") : "på nivå med";
-  const sqmInterp = sqmDiff > 1000 ? "Høyere priser." : sqmDiff < -1000 ? "Rimeligere." : "Normalt.";
+  const sqmAbsDiff = Math.abs(sqmDiff);
+  const sqmPrep = sqmDiff > 1000 ? "over" : sqmDiff < -1000 ? "under" : "på nivå med";
+  const sqmInterp = sqmDiff > 1000
+    ? "Høyere prisnivå enn byen for øvrig."
+    : sqmDiff < -1000
+    ? "Rimeligere område."
+    : "Normalt prisnivå.";
+  const sqmDesktop = sqmAbsDiff > 1000
+    ? `${(sqmAbsDiff / 1000).toFixed(0)} ${sqmAbsDiff >= 1000 ? '500' : '000'} kr/m² ${sqmPrep} Oslo-snittet (${(CITY_AVERAGE.avgSqmPrice / 1000).toFixed(0)} 500 kr/m²). ${sqmInterp}`
+    : `På nivå med Oslo-snittet (${(CITY_AVERAGE.avgSqmPrice / 1000).toFixed(0)} 500 kr/m²). ${sqmInterp}`;
+  const sqmMobile = sqmAbsDiff > 1000
+    ? `${(sqmAbsDiff / 1000).toFixed(1)}k ${sqmPrep} snittet (${(CITY_AVERAGE.avgSqmPrice / 1000).toFixed(1)}k). ${sqmDiff > 1000 ? 'Høyere nivå.' : 'Rimeligere.'}`
+    : `På nivå med snittet (${(CITY_AVERAGE.avgSqmPrice / 1000).toFixed(1)}k). Normalt nivå.`;
 
   return {
-    trend: { 
-      desktop: capitalizeFirst(`${trendValStr ? trendValStr + 'pp ' : ''}${trendPrep} Oslo-snittet (${CITY_AVERAGE.priceTrend}%). ${trendInterp}`), 
-      mobile: capitalizeFirst(`${trendValStr ? trendValStr + 'pp ' : ''}${trendPrep} snittet. ${trendInterp}`) 
-    },
-    days: { 
-      desktop: capitalizeFirst(`${Math.abs(daysDiff) > 2 ? Math.abs(daysDiff) + ' dager ' : ''}${daysPrep} snittet (${CITY_AVERAGE.daysOnMarket} d). ${daysInterp}`), 
-      mobile: capitalizeFirst(`${daysPrep} snittet. ${daysInterp}`) 
-    },
-    median: { 
-      desktop: capitalizeFirst(`${Math.abs(medianDiff) > 0.2 ? Math.abs(medianDiff) + 'M ' : ''}${medianPrep} snittet. ${medianInterp}`), 
-      mobile: capitalizeFirst(`${medianPrep} snittet. ${medianInterp}`) 
-    },
-    sqm: { 
-      desktop: capitalizeFirst(`${Math.abs(sqmDiff) > 1000 ? (Math.abs(sqmDiff)/1000).toFixed(0) + 'k ' : ''}${sqmPrep} snittet. ${sqmInterp}`), 
-      mobile: capitalizeFirst(`${sqmPrep} snittet. ${sqmInterp}`) 
-    }
+    trend: { desktop: trendDesktop, mobile: trendMobile },
+    days: { desktop: daysDesktop, mobile: daysMobile },
+    median: { desktop: medianDesktop, mobile: medianMobile },
+    sqm: { desktop: sqmDesktop, mobile: sqmMobile }
   };
 };
 
