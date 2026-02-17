@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Moon, ChevronDown, LayoutGrid } from 'lucide-react';
+import { Menu, X, Moon, ChevronDown } from 'lucide-react';
+import logoMobile from '../assets/logo-mobile.svg';
+import logoDesktop from '../assets/logo-desktop.svg';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,14 +21,17 @@ const Header: React.FC = () => {
       <div className="w-full max-w-[1700px] mx-auto px-3 md:px-14 flex items-center justify-between h-full">
         
         {/* Logo-seksjon */}
-        <div className="flex items-center gap-1.5 md:gap-2 group cursor-pointer shrink-0">
-          <div className="bg-[#0a0f1d] p-1 md:p-1.5 rounded-md md:rounded-lg group-hover:bg-blue-600 transition-colors">
-            <LayoutGrid className="text-white w-3.5 h-3.5 md:w-6 md:h-6" />
-          </div>
-          <div className="flex flex-col -space-y-1">
-            <span className="text-[14px] md:text-xl font-manrope font-extrabold text-[#0f172a] tracking-tight">Innsikt</span>
-            <span className="text-[6px] md:text-[9px] uppercase font-bold tracking-[0.2em] text-blue-600 hidden xs:block">Skaper Verdi</span>
-          </div>
+        <div className="flex items-center group cursor-pointer shrink-0">
+          <img
+            src={logoMobile}
+            alt="Innsikt"
+            className="h-6 md:hidden"
+          />
+          <img
+            src={logoDesktop}
+            alt="Innsikt"
+            className="h-10 hidden md:block"
+          />
         </div>
 
         {/* Desktop Links (Skjult på mobil) */}
