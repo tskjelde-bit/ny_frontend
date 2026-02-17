@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { Menu, X, Moon, ChevronDown } from 'lucide-react';
-import logoMobile from '../assets/logo-mobile.svg';
-import logoDesktop from '../assets/logo-desktop.svg';
+import logoMobile from '../assets/logo_mobile.png';
+import logoStacked from '../assets/logo_stacked.png';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -25,12 +25,12 @@ const Header: React.FC = () => {
           <img
             src={logoMobile}
             alt="Innsikt"
-            className="h-6 md:hidden"
+            className="h-7 md:hidden"
           />
           <img
-            src={logoDesktop}
+            src={logoStacked}
             alt="Innsikt"
-            className="h-10 hidden md:block"
+            className="h-12 hidden md:block"
           />
         </div>
 
