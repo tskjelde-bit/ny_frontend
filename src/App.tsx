@@ -57,7 +57,7 @@ const App: React.FC = () => {
 
       <div className="flex-1 flex justify-center min-h-0">
         {/* Main Centered Content Wrapper - px-0 på mobil for fullbredde kart */}
-        <div className="w-full max-w-[1680px] flex flex-col px-0 md:px-10 mx-auto min-h-0">
+        <div className="w-full max-w-[1700px] flex flex-col px-0 md:px-14 mx-auto min-h-0">
 
           {/* Top Row: Title Section - Skjules på mobil hvis kalkulator er åpen */}
           <div className={`pt-4 md:pt-10 pb-4 md:pb-6 shrink-0 text-left px-4 md:px-0 ${showCalculator ? 'hidden md:block' : 'block'}`}>
@@ -69,11 +69,11 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          {/* Bottom Row: Map & Sidepanel - flex-1 for å fylle rest av viewport på mobil */}
-          <div className="flex-1 flex flex-col lg:flex-row gap-0 md:gap-10 min-h-0 mb-0 md:mb-10 items-stretch">
+          {/* Bottom Row: Map & Sidepanel - grid system for bedre responsiv kontroll */}
+          <div className="grid lg:grid-cols-12 gap-0 lg:gap-8 lg:items-stretch mb-0 md:mb-10">
 
             {/* Map Container - Ingen padding eller border radius på mobil */}
-            <div className="flex-1 max-w-[1050px] flex flex-col min-w-0 rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] relative shadow-2xl">
+            <div className="lg:col-span-8 flex flex-col min-w-0 rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] relative shadow-2xl">
 
               {/* Map Area */}
               <div className="flex-1 min-h-0 relative">
@@ -135,7 +135,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Sidepanel - Skjult på mindre skjermer */}
-            <div className="hidden lg:flex flex-col w-[510px] shrink-0 h-full">
+            <div className="lg:col-span-4 hidden lg:flex flex-col">
                <RightPanel className="h-full rounded-[1rem] border border-white/5 shadow-2xl overflow-hidden" />
             </div>
           </div>
