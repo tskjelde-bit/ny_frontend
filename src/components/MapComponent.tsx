@@ -62,7 +62,7 @@ const LAYER_STYLES: Record<TileLayerKey, {
     borderWeight: 1.5,
     borderOpacity: 0.8,
     selectedFillColor: SELECTED_COLOR,
-    hoverFillOpacity: 0.55,
+    hoverFillOpacity: 0.4,
     labelColor: '#1E3A50',
     labelSelectedColor: '#FFFFFF',
     labelShadow: '0 0 4px rgba(255,255,255,0.9), 0 0 2px rgba(255,255,255,0.9)',
@@ -201,7 +201,7 @@ const MapComponent = forwardRef<MapComponentHandle, MapComponentProps>(({
           }
           return {
             fillColor,
-            fillOpacity: 0.4,
+            fillOpacity: 0.25,
             weight: style.borderWeight,
             color: style.borderColor,
             opacity: style.borderOpacity,
@@ -211,7 +211,7 @@ const MapComponent = forwardRef<MapComponentHandle, MapComponentProps>(({
           const isSelected = district && selected && district.name === selected.name;
           return {
             fillColor: isSelected ? style.selectedFillColor : 'transparent',
-            fillOpacity: isSelected ? 0.4 : 0,
+            fillOpacity: isSelected ? 0.25 : 0,
             weight: style.borderWeight,
             color: style.borderColor,
             opacity: style.borderOpacity,
