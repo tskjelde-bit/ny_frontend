@@ -95,14 +95,14 @@ const App: React.FC = () => {
                   {/* Zoom in */}
                   <button
                     onClick={() => mapComponentRef.current?.zoomIn()}
-                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-blue-600 hover:text-white transition-all"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-[#1e293b] text-white shadow-lg hover:bg-blue-600 transition-all"
                   >
                     <Plus size={14} />
                   </button>
                   {/* Zoom out */}
                   <button
                     onClick={() => mapComponentRef.current?.zoomOut()}
-                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-blue-600 hover:text-white transition-all"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-[#1e293b] text-white shadow-lg hover:bg-blue-600 transition-all"
                   >
                     <Minus size={14} />
                   </button>
@@ -110,9 +110,9 @@ const App: React.FC = () => {
                   <div className="relative mt-1 md:mt-2">
                     <button
                       onClick={() => setIsLayerMenuOpen(!isLayerMenuOpen)}
-                      className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all ${
-                        isLayerMenuOpen ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 border border-slate-200 shadow-sm'
-                      } hover:bg-blue-600 hover:text-white`}
+                      className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all shadow-lg ${
+                        isLayerMenuOpen ? 'bg-blue-600 text-white' : 'bg-[#1e293b] text-white'
+                      } hover:bg-blue-600`}
                     >
                       <Layers size={14} />
                     </button>
@@ -146,7 +146,7 @@ const App: React.FC = () => {
                       setSelectedDistrictId(null);
                       setIsExpanded(false);
                     }}
-                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-blue-600 hover:text-white transition-all"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-[#1e293b] text-white shadow-lg hover:bg-blue-600 transition-all"
                   >
                     <Target size={14} />
                   </button>
