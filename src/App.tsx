@@ -152,7 +152,7 @@ const App: React.FC = () => {
                 <div className="pointer-events-auto">
                   {/* Expand/Collapse Trigger */}
                   {selectedDistrictId && !showCalculator && (
-                    <div className="flex justify-center mb-[-1px]">
+                    <div className="flex justify-center mb-[-16px] md:mb-[-20px]">
                       <button
                         onClick={toggleExpand}
                         className="w-8 h-8 md:w-10 md:h-10 bg-blue-600 border-[3px] md:border-4 border-[#0a0f1d] rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-all shadow-2xl active:scale-90 group relative z-30"
