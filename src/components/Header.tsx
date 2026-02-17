@@ -35,7 +35,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* Desktop Links (Skjult på mobil) */}
-        <nav className="hidden lg:flex items-center gap-8 ml-4">
+        <nav className="hidden lg:flex items-center gap-8 ml-12">
           {navLinks.map((link) => (
             <a 
               key={link.name} 
