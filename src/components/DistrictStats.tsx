@@ -238,7 +238,7 @@ const StatBox = ({ title, value, colorClass, icon, desktopDesc, mobileDesc }: { 
     </div>
     <div className="space-y-0 md:space-y-1">
       {/* Oppdatert label til uppercase og økt tracking */}
-      <h4 className="text-[8px] md:text-[10px] font-bold text-slate-500 tracking-[0.15em] uppercase">{title}</h4>
+      <h4 className="text-[11px] md:text-[10px] font-bold text-slate-500 tracking-[0.15em] uppercase">{title}</h4>
       <p className="hidden md:block text-[12px] text-slate-400 leading-tight font-medium opacity-90 line-clamp-2">
         {desktopDesc}
       </p>
