@@ -98,11 +98,11 @@ const LAYER_STYLES: Record<TileLayerKey, {
   },
 };
 
-// Desktop/tablet settings
+// Desktop/tablet settings (more zoomed in to show details)
 const DEFAULT_CENTER: L.LatLngExpression = [59.92, 10.76];
-const DEFAULT_ZOOM = 10.8;
+const DEFAULT_ZOOM = 11.5;
 
-// Mobile settings (more zoomed in and centered higher)
+// Mobile settings (more zoomed out to show all districts)
 const MOBILE_CENTER: L.LatLngExpression = [59.91, 10.76];
 const MOBILE_ZOOM = 10.6;
 
