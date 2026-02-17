@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { DISTRICTS } from '@/constants';
+import React, { useState, useEffect, useRef } from 'react';
+import { OSLO_DISTRICTS } from '@/constants';
 import { DistrictData } from '@/types';
-import Map from '@/components/Map';
+import MapComponent, { MapComponentHandle, TileLayerKey, TILE_LAYERS } from '@/components/MapComponent';
 import DistrictStats from '@/components/DistrictStats';
 import Calculator from '@/components/Calculator';
 import Header from '@/components/Header';
 import RightPanel from '@/components/RightPanel';
-import { ChevronDown, ChevronUp, MapIcon, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronUp, MapIcon, Plus, Minus, Layers, Target } from 'lucide-react';
 
 const App: React.FC = () => {
   const [selectedDistrictId, setSelectedDistrictId] = useState<string | null>(null);
   const [showCalculator, setShowCalculator] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [activeTileLayer, setActiveTileLayer] = useState<TileLayerKey>('blue');
+  const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
+  const mapComponentRef = useRef<MapComponentHandle>(null);
 
   const selectedDistrict = DISTRICTS.find(d => d.id === selectedDistrictId) || null;
 
@@ -77,20 +80,75 @@ const App: React.FC = () => {
 
               {/* Map Area */}
               <div className="flex-1 min-h-0 relative">
-                <Map
-                  districts={DISTRICTS}
-                  selectedDistrict={selectedDistrictId}
-                  onSelect={handleDistrictSelect}
-                  onDistrictClick={handleDistrictClick}
+                <MapComponent
+                  ref={mapComponentRef}
+                  properties={[]}
+                  districts={OSLO_DISTRICTS}
+                  selectedProperty={null}
+                  selectedDistrict={selectedDistrict}
+                  onPropertySelect={() => {}}
+                  onDistrictSelect={handleDistrictSelect}
                 />
 
-                {/* Zoom Controls */}
-                <div className="absolute right-3 top-3 md:right-6 md:top-6 flex flex-col gap-1 md:gap-2 z-10">
-                  <button className="w-8 h-8 md:w-10 md:h-10 bg-white/95 border border-slate-200 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-slate-50 transition-all shadow-lg group">
-                    <span className="text-lg md:text-xl font-bold text-slate-600 group-hover:text-blue-600 transition-colors">+</span>
+                {/* Map Controls - Circular buttons like v3 */}
+                <div className="absolute top-1/2 -translate-y-1/2 right-4 z-[500] flex flex-col gap-2 pointer-events-auto">
+                  {/* Zoom in */}
+                  <button
+                    onClick={() => mapComponentRef.current?.zoomIn()}
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-blue-600 hover:text-white transition-all"
+                  >
+                    <Plus size={14} />
                   </button>
-                  <button className="w-8 h-8 md:w-10 md:h-10 bg-white/95 border border-slate-200 rounded-lg md:rounded-xl flex items-center justify-center hover:bg-slate-50 transition-all shadow-lg group">
-                    <span className="text-lg md:text-xl font-bold text-slate-600 group-hover:text-blue-600 transition-colors">−</span>
+                  {/* Zoom out */}
+                  <button
+                    onClick={() => mapComponentRef.current?.zoomOut()}
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-blue-600 hover:text-white transition-all"
+                  >
+                    <Minus size={14} />
+                  </button>
+                  {/* Layers toggle */}
+                  <div className="relative mt-1 md:mt-2">
+                    <button
+                      onClick={() => setIsLayerMenuOpen(!isLayerMenuOpen)}
+                      className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all ${
+                        isLayerMenuOpen ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 border border-slate-200 shadow-sm'
+                      } hover:bg-blue-600 hover:text-white`}
+                    >
+                      <Layers size={14} />
+                    </button>
+                    {/* Layer menu popup */}
+                    {isLayerMenuOpen && (
+                      <div className="absolute right-full mr-2 top-0 rounded-lg shadow-xl overflow-hidden border bg-white border-slate-200" style={{ minWidth: '120px' }}>
+                        {(Object.keys(TILE_LAYERS) as TileLayerKey[]).map((key) => (
+                          <button
+                            key={key}
+                            onClick={() => {
+                              mapComponentRef.current?.setTileLayer(key);
+                              setActiveTileLayer(key);
+                              setIsLayerMenuOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-2 px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                              activeTileLayer === key
+                                ? 'bg-blue-600 text-white'
+                                : 'text-slate-700 hover:bg-slate-50'
+                            }`}
+                          >
+                            {TILE_LAYERS[key].name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {/* Reset / center */}
+                  <button
+                    onClick={() => {
+                      mapComponentRef.current?.resetView();
+                      setSelectedDistrictId(null);
+                      setIsExpanded(false);
+                    }}
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-blue-600 hover:text-white transition-all"
+                  >
+                    <Target size={14} />
                   </button>
                 </div>
 

@@ -1,174 +1,6 @@
 
-import { DistrictData, DistrictInfo, BoligType, Standard } from './types';
+import { Property, DistrictInfo, BlogPost } from './types';
 
-export const BOLIGTYPE_FACTORS: Record<BoligType, number> = {
-  [BoligType.LEILIGHET]: 1.00,
-  [BoligType.REKKEHUS]: 0.92,
-  [BoligType.TOMANNSBOLIG]: 0.88,
-  [BoligType.ENEBOLIG]: 0.85
-};
-
-export const STANDARD_FACTORS: Record<Standard, number> = {
-  [Standard.STANDARD]: 0.00,
-  [Standard.OPPGRADERT]: 0.08,
-  [Standard.RENOVERINGSBEHOV]: -0.10
-};
-
-// Legacy district data for SVG map (deprecated)
-export const DISTRICTS: DistrictData[] = [
-  {
-    id: 'vestre-aker',
-    name: 'Vestre Aker',
-    priceTrend: 3.2,
-    avgSqmPrice: 115000,
-    medianPrice: 12.5,
-    daysOnMarket: 18,
-    description: 'Sterkere prisvekst enn byen for øvrig. Høyt prisnivå.',
-    path: ''
-  },
-  {
-    id: 'nordre-aker',
-    name: 'Nordre Aker',
-    priceTrend: 2.8,
-    avgSqmPrice: 104000,
-    medianPrice: 9.8,
-    daysOnMarket: 21,
-    description: 'Stabil vekst i et populært boligområde for barnefamilier.',
-    path: ''
-  },
-  {
-    id: 'bjerke',
-    name: 'Bjerke',
-    priceTrend: 2.2,
-    avgSqmPrice: 72000,
-    medianPrice: 5.9,
-    daysOnMarket: 24,
-    description: 'Område i vekst med mange nye boligprosjekter.',
-    path: ''
-  },
-  {
-    id: 'grorud',
-    name: 'Grorud',
-    priceTrend: 1.8,
-    avgSqmPrice: 65000,
-    medianPrice: 4.2,
-    daysOnMarket: 25,
-    description: 'Bydel med god tilgang på rimeligere familieboliger.',
-    path: ''
-  },
-  {
-    id: 'stovner',
-    name: 'Stovner',
-    priceTrend: 1.4,
-    avgSqmPrice: 62000,
-    medianPrice: 3.6,
-    daysOnMarket: 30,
-    description: 'Oslos rimeligste bydel med mange grønne lunger.',
-    path: ''
-  },
-  {
-    id: 'ullern',
-    name: 'Ullern',
-    priceTrend: 3.5,
-    avgSqmPrice: 108000,
-    medianPrice: 11.2,
-    daysOnMarket: 19,
-    description: 'Attraktivt område med nærhet til både sjø og skog.',
-    path: ''
-  },
-  {
-    id: 'frogner',
-    name: 'Frogner',
-    priceTrend: 4.1,
-    avgSqmPrice: 128000,
-    medianPrice: 8.5,
-    daysOnMarket: 22,
-    description: 'Høyest kvadratmeterpris i Oslo. Vedvarende høy etterspørsel.',
-    path: ''
-  },
-  {
-    id: 'st-hanshaugen',
-    name: 'St. Hanshaugen',
-    priceTrend: 2.4,
-    avgSqmPrice: 98000,
-    medianPrice: 6.2,
-    daysOnMarket: 17,
-    description: 'Sentralt og urbant område med mange mindre leiligheter.',
-    path: ''
-  },
-  {
-    id: 'sagene',
-    name: 'Sagene',
-    priceTrend: 2.5,
-    avgSqmPrice: 95000,
-    medianPrice: 5.8,
-    daysOnMarket: 18,
-    description: 'Populært og sjarmerende område langs Akerselva.',
-    path: ''
-  },
-  {
-    id: 'grunerlokka',
-    name: 'Grünerløkka',
-    priceTrend: 2.1,
-    avgSqmPrice: 92000,
-    medianPrice: 5.4,
-    daysOnMarket: 16,
-    description: 'Høy likviditet og mange salg. Populært blant unge voksne.',
-    path: ''
-  },
-  {
-    id: 'gamle-oslo',
-    name: 'Gamle Oslo',
-    priceTrend: 3.8,
-    avgSqmPrice: 88000,
-    medianPrice: 5.8,
-    daysOnMarket: 20,
-    description: 'Størst utvikling i Bjørvika og Sørenga drar opp snittet.',
-    path: ''
-  },
-  {
-    id: 'alna',
-    name: 'Alna',
-    priceTrend: 1.5,
-    avgSqmPrice: 62000,
-    medianPrice: 4.5,
-    daysOnMarket: 28,
-    description: 'Moderat prisvekst. Godt tilbud av større familieboliger.',
-    path: ''
-  },
-  {
-    id: 'oestensjoe',
-    name: 'Østensjø',
-    priceTrend: 2.0,
-    avgSqmPrice: 78000,
-    medianPrice: 5.2,
-    daysOnMarket: 22,
-    description: 'Veletablert boligområde med mange rekkehus og eneboliger.',
-    path: ''
-  },
-  {
-    id: 'nordstrand',
-    name: 'Nordstrand',
-    priceTrend: 2.9,
-    avgSqmPrice: 88000,
-    medianPrice: 7.5,
-    daysOnMarket: 20,
-    description: 'Kjent for flott utsikt og attraktive eneboliger.',
-    path: ''
-  },
-  {
-    id: 'soendre-nordstrand',
-    name: 'Søndre Nordstrand',
-    priceTrend: 1.2,
-    avgSqmPrice: 58000,
-    medianPrice: 3.8,
-    daysOnMarket: 32,
-    description: 'Nyere bydel med god plass og rimelige priser.',
-    path: ''
-  }
-];
-
-// MapComponent district data (from meglerinnsikt_v3 - matches GeoJSON)
 export const OSLO_DISTRICTS: DistrictInfo[] = [
   {
     id: 'oslo',
@@ -359,9 +191,98 @@ export const OSLO_DISTRICTS: DistrictInfo[] = [
   }
 ];
 
-export const CITY_AVERAGE = {
-  priceTrend: 2.4,
-  daysOnMarket: 19,
-  medianPrice: 5.8,
-  avgSqmPrice: 94500
-};
+export const MOCK_PROPERTIES: Property[] = [
+  {
+    id: '1',
+    title: 'Moderne Loft på St. Hanshaugen',
+    price: 6450000,
+    bedrooms: 2,
+    bathrooms: 1,
+    sqft: 65,
+    address: 'Waldemar Thranes gate 45',
+    city: 'Oslo',
+    lat: 59.9268,
+    lng: 10.7401,
+    image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800',
+    type: 'Apartment',
+    description: 'Fantastisk loftsleilighet med takterrasse og utsikt.',
+    tags: ['Utsikt', 'Loft', 'Sentrale']
+  },
+  {
+    id: '2',
+    title: 'Klassisk Frogner-perle',
+    price: 12500000,
+    bedrooms: 3,
+    bathrooms: 2,
+    sqft: 115,
+    address: 'Bygdøy Allé 12',
+    city: 'Oslo',
+    lat: 59.9171,
+    lng: 10.7061,
+    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800',
+    type: 'Apartment',
+    description: 'Herskapelig leilighet med stukkatur og peis.',
+    tags: ['Herskapelig', 'Frogner', 'Høy standard']
+  }
+];
+
+export const MOCK_BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'b1',
+    title: 'Boligpriser Oslo 2026-2028: Analyse av ferske prognoser',
+    date: 'JAN 12',
+    category: 'MARKEDSINNSIKT',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b2',
+    title: 'Hvordan vil utviklingen i styringsrenta påvirke boligprisene fremover?',
+    date: 'JAN 05',
+    category: 'MARKEDSINNSIKT',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b3',
+    title: 'Markedsrapport Juni 2025',
+    date: 'JUN 30',
+    category: 'MARKEDSRAPPORTER',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b4',
+    title: 'Markedsrapport Oktober 2025',
+    date: 'OKT 31',
+    category: 'MARKEDSRAPPORTER',
+    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b5',
+    title: 'Markedsrapport September 2025',
+    date: 'SEP 30',
+    category: 'MARKEDSRAPPORTER',
+    image: 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b6',
+    title: 'Oslo bygger for lite – boligunderskuddet vokser',
+    date: 'AUG 15',
+    category: 'MARKEDSINNSIKT',
+    image: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b7',
+    title: 'Sommermarkedet i Oslo kan bli en fest – men for hvem?',
+    date: 'JUN 10',
+    category: 'MARKEDSINNSIKT',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'b8',
+    title: 'Unngå de vanligste feilene som førstegangskjøper i Oslo',
+    date: 'MAI 22',
+    category: 'TIPS & TRIKS',
+    image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=600'
+  }
+];
+
+export const APP_NAME = "Meglerinnsikt";
