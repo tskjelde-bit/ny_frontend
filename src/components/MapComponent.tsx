@@ -98,8 +98,20 @@ const LAYER_STYLES: Record<TileLayerKey, {
   },
 };
 
+// Desktop/tablet settings
 const DEFAULT_CENTER: L.LatLngExpression = [59.92, 10.76];
 const DEFAULT_ZOOM = 10.8;
+
+// Mobile settings (more zoomed out and centered differently)
+const MOBILE_CENTER: L.LatLngExpression = [59.94, 10.76];
+const MOBILE_ZOOM = 10.2;
+
+function getDefaultView(): { center: L.LatLngExpression; zoom: number } {
+  const isMobile = window.innerWidth < 768;
+  return isMobile
+    ? { center: MOBILE_CENTER, zoom: MOBILE_ZOOM }
+    : { center: DEFAULT_CENTER, zoom: DEFAULT_ZOOM };
+}
 
 export interface MapComponentHandle {
   zoomIn: () => void;
@@ -326,7 +338,10 @@ const MapComponent = forwardRef<MapComponentHandle, MapComponentProps>(({
   useImperativeHandle(ref, () => ({
     zoomIn: () => { mapRef.current?.zoomIn(); },
     zoomOut: () => { mapRef.current?.zoomOut(); },
-    resetView: () => { mapRef.current?.setView(DEFAULT_CENTER, DEFAULT_ZOOM); },
+    resetView: () => {
+      const view = getDefaultView();
+      mapRef.current?.setView(view.center, view.zoom);
+    },
     setTileLayer: (key: TileLayerKey) => {
       const map = mapRef.current;
       if (!map) return;
@@ -348,10 +363,11 @@ const MapComponent = forwardRef<MapComponentHandle, MapComponentProps>(({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    const view = getDefaultView();
     const map = L.map(containerRef.current, {
       zoomControl: false,
       attributionControl: false,
-    }).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+    }).setView(view.center, view.zoom);
 
     // Default tile layer (blue)
     const def = TILE_LAYERS.blue;
@@ -359,9 +375,18 @@ const MapComponent = forwardRef<MapComponentHandle, MapComponentProps>(({
 
     mapRef.current = map;
 
+    let lastIsMobile = window.innerWidth < 768;
     const handleResize = () => {
       if (mapRef.current) {
         mapRef.current.invalidateSize();
+
+        // Check if we crossed the mobile/desktop breakpoint
+        const currentIsMobile = window.innerWidth < 768;
+        if (currentIsMobile !== lastIsMobile) {
+          lastIsMobile = currentIsMobile;
+          const newView = getDefaultView();
+          mapRef.current.setView(newView.center, newView.zoom);
+        }
       }
     };
     window.addEventListener('resize', handleResize);
