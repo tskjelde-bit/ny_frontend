@@ -201,7 +201,7 @@ const MapComponent = forwardRef<MapComponentHandle, MapComponentProps>(({
           }
           return {
             fillColor,
-            fillOpacity: 0.4,
+            fillOpacity: 0.55,
             weight: style.borderWeight,
             color: style.borderColor,
             opacity: style.borderOpacity,

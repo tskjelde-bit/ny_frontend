@@ -73,12 +73,12 @@ const App: React.FC = () => {
           </div>
 
           {/* Bottom Row: Map & Sidepanel - grid system for bedre responsiv kontroll */}
-          <div className="grid lg:grid-cols-12 gap-0 lg:gap-8 lg:items-stretch mb-0 md:mb-4 flex-1">
+          <div className="grid lg:grid-cols-12 gap-0 lg:gap-8 lg:items-stretch mb-0 md:mb-4 flex-1 min-h-0">
 
             {/* Map Container - Ingen padding eller border radius på mobil */}
-            <div className="lg:col-span-8 flex flex-col min-w-0 rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] relative shadow-2xl">
+            <div className="lg:col-span-8 flex flex-col min-h-0 min-w-0 rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] relative shadow-2xl">
 
-              {/* Map Area */}
+              {/* Map Area - flex-1 + min-h-0 sørger for at kartet krymper og gir plass til panelet */}
               <div className="flex-1 min-h-0 relative">
                 <MapComponent
                   ref={mapComponentRef}

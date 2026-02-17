@@ -82,7 +82,7 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
 
   if (!district) {
     return (
-      <div className="bg-white/50 h-full flex items-center animate-in fade-in duration-700">
+      <div className="bg-white/80 backdrop-blur-sm h-full flex items-center animate-in fade-in duration-700">
         <div className="max-w-[1050px] mx-auto px-4 md:px-10 w-full py-3.5 md:py-4">
           <div className="grid grid-cols-4 gap-2 md:gap-4 w-full">
             <StatItem label="Prisendring" value={`+${data.priceChange}%`} color={osloTextColor} labelColor={osloTextColor} center small />
