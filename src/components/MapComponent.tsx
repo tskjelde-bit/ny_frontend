@@ -102,9 +102,9 @@ const LAYER_STYLES: Record<TileLayerKey, {
 const DEFAULT_CENTER: L.LatLngExpression = [59.92, 10.76];
 const DEFAULT_ZOOM = 10.8;
 
-// Mobile settings (more zoomed out and centered differently)
-const MOBILE_CENTER: L.LatLngExpression = [59.94, 10.76];
-const MOBILE_ZOOM = 10.2;
+// Mobile settings (more zoomed in and centered higher)
+const MOBILE_CENTER: L.LatLngExpression = [59.91, 10.76];
+const MOBILE_ZOOM = 10.6;
 
 function getDefaultView(): { center: L.LatLngExpression; zoom: number } {
   const isMobile = window.innerWidth < 768;
