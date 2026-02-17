@@ -18,11 +18,15 @@ const capitalizeFirst = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-// Hjelpefunksjoner for fargekoding - Oppdatert til gul/gull for å matche screenshot
-const getTrendColor = (val: number) => 'text-[#facc15]';
-const getDaysColor = (val: number) => 'text-[#facc15]';
-const getSqmColor = (val: number) => 'text-[#facc15]';
-const getMedianColor = (val: number) => 'text-[#facc15]';
+// Fargekoding: grønn/gul/rød basert på markedsdata
+const GREEN = 'text-[#03d392]';
+const YELLOW = 'text-[#facc15]';
+const RED = 'text-[#e05a5a]';
+
+const getTrendColor = (val: number) => val >= 2.5 ? GREEN : val >= 1.5 ? YELLOW : RED;
+const getDaysColor = (val: number) => val <= 18 ? GREEN : val <= 24 ? YELLOW : RED;
+const getSqmColor = (val: number) => val >= 110000 ? GREEN : val >= 75000 ? YELLOW : RED;
+const getMedianColor = (val: number) => val >= 7000000 ? GREEN : val >= 4500000 ? YELLOW : RED;
 
 // Logikk for generering av sammenligningstekster
 const getComparisonTexts = (district: DistrictInfo) => {
@@ -77,7 +81,6 @@ const DistrictStats: React.FC<DistrictStatsProps> = ({ district, isExpanded, onO
   };
 
   const compTexts = district ? getComparisonTexts(district) : null;
-  const yellowColor = 'text-[#facc15]';
   const osloTextColor = 'text-[#0b1018]';
 
   if (!district) {
