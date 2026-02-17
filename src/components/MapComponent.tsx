@@ -98,8 +98,8 @@ const LAYER_STYLES: Record<TileLayerKey, {
   },
 };
 
-const DEFAULT_CENTER: L.LatLngExpression = [59.89, 10.76];
-const DEFAULT_ZOOM = 11.5;
+const DEFAULT_CENTER: L.LatLngExpression = [59.92, 10.76];
+const DEFAULT_ZOOM = 10.8;
 
 export interface MapComponentHandle {
   zoomIn: () => void;
