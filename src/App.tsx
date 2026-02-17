@@ -46,12 +46,12 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[100dvh] md:min-h-screen md:h-auto w-full bg-[#0a0f1d] text-slate-100 font-sans overflow-hidden md:overflow-y-auto">
+    <div className="flex flex-col h-[100dvh] w-full bg-[#0a0f1d] text-slate-100 font-sans overflow-hidden">
       <Header />
 
-      <div className="flex-1 flex flex-col min-h-0 md:block md:flex-none">
+      <div className="flex-1 flex flex-col min-h-0">
         {/* Main Centered Content Wrapper */}
-        <div className="w-full max-w-[1700px] flex flex-col px-0 md:px-14 mx-auto min-h-0 flex-1 md:flex-none md:block">
+        <div className="w-full max-w-[1700px] flex flex-col px-0 md:px-14 mx-auto min-h-0 flex-1">
 
           {/* Title Section */}
           <div className={`pt-2 md:pt-10 pb-2 md:pb-6 shrink-0 text-left px-4 md:px-0 ${showCalculator ? 'hidden md:block' : 'block'}`}>
@@ -64,11 +64,11 @@ const App: React.FC = () => {
           </div>
 
           {/* Map & Sidepanel Grid */}
-          <div className="grid lg:grid-cols-12 gap-0 lg:gap-8 lg:items-stretch mb-0 md:mb-4 flex-1 min-h-0 md:flex-none">
+          <div className="grid lg:grid-cols-12 gap-0 lg:gap-8 lg:items-stretch mb-0 md:mb-4 flex-1 min-h-0">
 
             {/* Map Container — relative parent, map is absolute inset-0, stats overlay at bottom */}
             <div
-              className="lg:col-span-8 relative rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] shadow-2xl flex-1 min-h-0 md:flex-none md:!h-[450px] lg:!h-auto"
+              className="lg:col-span-8 relative rounded-none md:rounded-[1rem] overflow-hidden bg-white md:bg-[#f1f5f9] shadow-2xl flex-1 min-h-0"
             >
 
               {/* Map — fills entire container */}
